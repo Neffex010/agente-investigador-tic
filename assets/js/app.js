@@ -331,6 +331,29 @@ function finalizarFlujo() {
 
 
 function renderizarReporteFinal(markdown) {
+    const esRechazo = markdown.includes("Soy Radar TIC y solo puedo ayudarte");
+
+    if (esRechazo) {
+        reporte.innerHTML = `
+            <section class="rechazo-alcance report-hero">
+                <div class="report-lead">
+                    ${escaparHTML(markdown)}
+                </div>
+            </section>
+        `;
+
+        const seccionFuentes = fuentesFinales.closest("section");
+
+        if (seccionFuentes) {
+            seccionFuentes.classList.add("d-none");
+        }
+
+        fuentesFinales.innerHTML = "";
+        contadorFuentesFinal.textContent = "0";
+
+        return;
+    }
+
     const parsed = parseStructuredMarkdown(markdown);
 
     let html = `
