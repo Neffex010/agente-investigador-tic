@@ -1164,3 +1164,24 @@ function escaparAtributo(texto) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 }
+
+
+const chipsSugerencias = document.querySelectorAll(".sugerencia-chip");
+
+chipsSugerencias.forEach((chip) => {
+    chip.addEventListener("click", () => {
+        const texto = chip.getAttribute("data-pregunta") || "";
+        if (!texto) return;
+        pregunta.value = texto;
+        pregunta.focus();
+    });
+});
+
+
+pregunta.addEventListener("keydown", (evento) => {
+    const esCtrlOcmd = evento.ctrlKey || evento.metaKey;
+    if (esCtrlOcmd && evento.key === "Enter") {
+        evento.preventDefault();
+        btnInvestigar.click();
+    }
+});
