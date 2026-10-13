@@ -119,6 +119,10 @@ Debes incluir al menos 3 filas cuando la pregunta lo permita.
 """
 
 
+LONGITUD_MINIMA_PREGUNTA = 10
+LONGITUD_MAXIMA_PREGUNTA = 500
+
+
 app = Flask(
     __name__,
     static_folder="assets",
@@ -197,6 +201,36 @@ def investigar():
                 "error",
                 {
                     "mensaje": "Debes escribir una pregunta de investigación."
+                }
+            ),
+            mimetype="text/event-stream",
+            status=400
+        )
+
+    if len(pregunta) < LONGITUD_MINIMA_PREGUNTA:
+        return Response(
+            sse(
+                "error",
+                {
+                    "mensaje": (
+                        "Tu pregunta es demasiado corta. "
+                        "Describe con más detalle qué quieres investigar."
+                    )
+                }
+            ),
+            mimetype="text/event-stream",
+            status=400
+        )
+
+    if len(pregunta) > LONGITUD_MAXIMA_PREGUNTA:
+        return Response(
+            sse(
+                "error",
+                {
+                    "mensaje": (
+                        "Tu pregunta es demasiado larga. "
+                        f"Intenta resumirla a menos de {LONGITUD_MAXIMA_PREGUNTA} caracteres."
+                    )
                 }
             ),
             mimetype="text/event-stream",
