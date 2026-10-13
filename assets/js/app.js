@@ -345,6 +345,14 @@ function finalizarFlujo() {
         behavior: "smooth",
         block: "start"
     });
+
+    if (
+        typeof reporteCompleto === "string" && reporteCompleto &&
+        typeof ultimaPreguntaEnviada === "string" && ultimaPreguntaEnviada &&
+        !reporteCompleto.includes("Soy Radar TIC y solo puedo ayudarte")
+    ) {
+        guardarEnHistorial(ultimaPreguntaEnviada, reporteCompleto);
+    }
 }
 
 
@@ -1348,3 +1356,194 @@ if (btnDescargarReporte) {
         URL.revokeObjectURL(url);
     });
 }
+
+
+// =========================================================================
+// Historial de investigaciones (localStorage)
+// =========================================================================
+
+const HISTORIAL_CLAVE = "radar-tic-historial";
+const HISTORIAL_MAX = 5;
+
+const historialPanel = document.getElementById("historialPanel");
+const historialOverlay = document.getElementById("historialOverlay");
+const historialLista = document.getElementById("historialLista");
+const btnAbrirHistorial = document.getElementById("btnAbrirHistorial");
+const btnCerrarHistorial = document.getElementById("btnCerrarHistorial");
+const btnLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
+
+function leerHistorial() {
+    try {
+        const crudo = localStorage.getItem(HISTORIAL_CLAVE);
+        if (!crudo) return [];
+        const datos = JSON.parse(crudo);
+        return Array.isArray(datos) ? datos : [];
+    } catch (err) {
+        return [];
+    }
+}
+
+function guardarHistorial(entradas) {
+    try {
+        localStorage.setItem(HISTORIAL_CLAVE, JSON.stringify(entradas));
+    } catch (err) {
+        console.warn("No se pudo guardar el historial:", err);
+    }
+}
+
+function guardarEnHistorial(pregunta, reporte) {
+    if (!pregunta || !reporte) return;
+    const entradas = leerHistorial();
+    // Eliminar duplicado por pregunta exacta
+    const filtradas = entradas.filter((e) => e.pregunta !== pregunta);
+    // Insertar al inicio
+    filtradas.unshift({
+        pregunta: pregunta,
+        reporte: reporte,
+        fecha: Date.now(),
+    });
+    // Recortar a máximo
+    const recortadas = filtradas.slice(0, HISTORIAL_MAX);
+    guardarHistorial(recortadas);
+    renderizarHistorial();
+}
+
+function formatearFecha(ts) {
+    const ahora = Date.now();
+    const diff = Math.floor((ahora - ts) / 1000); // segundos
+    if (diff < 60) return "hace unos segundos";
+    if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
+    if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
+    if (diff < 604800) return `hace ${Math.floor(diff / 86400)} d`;
+    const fecha = new Date(ts);
+    return fecha.toLocaleDateString("es-MX");
+}
+
+function renderizarHistorial() {
+    if (!historialLista) return;
+    const entradas = leerHistorial();
+
+    if (entradas.length === 0) {
+        historialLista.innerHTML = `
+            <p class="historial-vacio">
+                Aún no hay investigaciones guardadas.
+            </p>
+        `;
+        return;
+    }
+
+    historialLista.innerHTML = entradas.map((entrada, indice) => {
+        const preguntaEscapada = escaparHTML(entrada.pregunta);
+        const fechaTexto = formatearFecha(entrada.fecha);
+        return `
+            <div class="historial-item" data-indice="${indice}">
+                <div class="historial-item-info">
+                    <p class="historial-item-pregunta">${preguntaEscapada}</p>
+                    <p class="historial-item-fecha">${fechaTexto}</p>
+                </div>
+                <button
+                    type="button"
+                    class="historial-item-eliminar"
+                    data-eliminar="${indice}"
+                    title="Eliminar"
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+    }).join("");
+
+    // Listeners de cada item
+    historialLista.querySelectorAll(".historial-item").forEach((item) => {
+        item.addEventListener("click", (evento) => {
+            // Si el clic fue en el botón eliminar, no restaurar
+            if (evento.target.closest("[data-eliminar]")) return;
+            const indice = parseInt(item.getAttribute("data-indice"), 10);
+            restaurarDelHistorial(indice);
+        });
+    });
+
+    // Listeners de los botones eliminar
+    historialLista.querySelectorAll("[data-eliminar]").forEach((btn) => {
+        btn.addEventListener("click", (evento) => {
+            evento.stopPropagation();
+            const indice = parseInt(btn.getAttribute("data-eliminar"), 10);
+            eliminarDelHistorial(indice);
+        });
+    });
+}
+
+function restaurarDelHistorial(indice) {
+    const entradas = leerHistorial();
+    const entrada = entradas[indice];
+    if (!entrada) return;
+
+    // Restaurar la pregunta y el reporte
+    if (typeof pregunta !== "undefined" && pregunta) {
+        pregunta.value = entrada.pregunta;
+    }
+    ultimaPreguntaEnviada = entrada.pregunta;
+    reporteCompleto = entrada.reporte;
+
+    if (typeof renderizarReporteFinal === "function") {
+        renderizarReporteFinal(entrada.reporte);
+    }
+
+    // Mostrar la sección de resultado si está oculta
+    const seccionResultado = document.getElementById("resultado");
+    if (seccionResultado) {
+        seccionResultado.classList.remove("d-none");
+    }
+
+    // Scroll suave al resultado
+    if (seccionResultado && seccionResultado.scrollIntoView) {
+        seccionResultado.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    cerrarHistorial();
+}
+
+function eliminarDelHistorial(indice) {
+    const entradas = leerHistorial();
+    entradas.splice(indice, 1);
+    guardarHistorial(entradas);
+    renderizarHistorial();
+}
+
+function abrirHistorial() {
+    if (!historialPanel) return;
+    renderizarHistorial();
+    historialPanel.classList.add("historial-abierto");
+    if (historialOverlay) historialOverlay.classList.remove("d-none");
+    document.body.style.overflow = "hidden";
+}
+
+function cerrarHistorial() {
+    if (!historialPanel) return;
+    historialPanel.classList.remove("historial-abierto");
+    if (historialOverlay) historialOverlay.classList.add("d-none");
+    document.body.style.overflow = "";
+}
+
+// Listeners globales
+if (btnAbrirHistorial) btnAbrirHistorial.addEventListener("click", abrirHistorial);
+if (btnCerrarHistorial) btnCerrarHistorial.addEventListener("click", cerrarHistorial);
+if (historialOverlay) historialOverlay.addEventListener("click", cerrarHistorial);
+if (btnLimpiarHistorial) {
+    btnLimpiarHistorial.addEventListener("click", () => {
+        if (confirm("¿Borrar todo el historial de investigaciones?")) {
+            guardarHistorial([]);
+            renderizarHistorial();
+        }
+    });
+}
+
+// Cerrar con tecla Escape
+document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape" && historialPanel && historialPanel.classList.contains("historial-abierto")) {
+        cerrarHistorial();
+    }
+});
+
+// Render inicial
+renderizarHistorial();

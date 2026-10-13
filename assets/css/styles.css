@@ -1315,3 +1315,135 @@ body {
         flex: 1 1 100%;
     }
 }
+
+
+/* =========================================================
+   HISTORIAL DE INVESTIGACIONES · panel lateral
+   ========================================================= */
+
+.historial-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1040;
+    transition: opacity 0.2s ease;
+}
+
+.historial-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 380px;
+    max-width: 100vw;
+    background: #ffffff;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+}
+
+.historial-panel.historial-abierto {
+    transform: translateX(0);
+}
+
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--panel-border, #cfd8e3);
+}
+
+.historial-titulo {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--text, #1f2937);
+}
+
+.historial-cerrar {
+    color: var(--muted, #667085);
+    text-decoration: none;
+    padding: 4px 8px;
+}
+
+.historial-lista {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 12px;
+}
+
+.historial-vacio {
+    text-align: center;
+    color: var(--muted, #667085);
+    font-size: 0.9rem;
+    padding: 40px 20px;
+}
+
+.historial-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--panel-border, #cfd8e3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.historial-item:hover {
+    background: rgba(79, 124, 255, 0.06);
+    border-color: var(--accent, #18a9d5);
+}
+
+.historial-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.historial-item-pregunta {
+    font-size: 0.9rem;
+    color: var(--text, #1f2937);
+    margin: 0 0 4px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.historial-item-fecha {
+    font-size: 0.75rem;
+    color: var(--muted, #667085);
+    margin: 0;
+}
+
+.historial-item-eliminar {
+    background: transparent;
+    border: none;
+    color: var(--muted, #667085);
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+}
+
+.historial-item-eliminar:hover {
+    color: #c0392b;
+}
+
+.historial-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--panel-border, #cfd8e3);
+}
+
+@media (max-width: 576px) {
+    .historial-panel {
+        width: 100vw;
+    }
+}
