@@ -37,8 +37,9 @@ async function investigar() {
 
     prepararInterfaz();
 
+    let respuesta = null;
     try {
-        const respuesta = await fetch(
+        respuesta = await fetch(
             "/api/investigar",
             {
                 method: "POST",
@@ -51,6 +52,13 @@ async function investigar() {
             }
         );
 
+        // Si el status es distinto de 400 (que ya se maneja vía SSE),
+        // mostramos un mensaje específico según el código HTTP.
+        if (!respuesta.ok && respuesta.status !== 400) {
+            mostrarError(mensajeSegunError(null, respuesta));
+            return;
+        }
+
         if (!respuesta.body) {
             throw new Error(
                 "El navegador no pudo abrir el flujo de datos."
@@ -60,7 +68,7 @@ async function investigar() {
         await procesarStream(respuesta);
 
     } catch (err) {
-        mostrarError(err.message);
+        mostrarError(mensajeSegunError(err, respuesta));
     } finally {
         btnInvestigar.disabled = false;
     }
@@ -1240,4 +1248,35 @@ if (btnReintentar) {
         pregunta.value = ultimaPreguntaEnviada;
         btnInvestigar.click();
     });
+}
+
+
+function mensajeSegunError(error, respuesta) {
+    // Error de red: fetch no pudo conectar
+    if (error instanceof TypeError) {
+        return "No hay conexión a internet. Verifica tu red e intenta de nuevo.";
+    }
+
+    // Error HTTP con status conocido
+    if (respuesta && typeof respuesta.status === "number") {
+        const status = respuesta.status;
+        if (status === 401) {
+            return "La configuración del servicio no es válida. Contacta al administrador.";
+        }
+        if (status === 429) {
+            return "El servicio está saturado en este momento. Espera unos segundos y vuelve a intentar.";
+        }
+        if (status === 500 || status === 502 || status === 503) {
+            return "El servicio no está disponible temporalmente. Intenta de nuevo en un momento.";
+        }
+        if (status === 504) {
+            return "La investigación tardó demasiado. Intenta con una pregunta más específica.";
+        }
+    }
+
+    // Fallback: usar el mensaje del error o un genérico
+    if (error && error.message) {
+        return error.message;
+    }
+    return "Ocurrió un error inesperado. Intenta de nuevo.";
 }
