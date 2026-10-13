@@ -1292,3 +1292,26 @@ body {
     color: var(--accent, #18a9d5);
     font-weight: 600;
 }
+
+
+/* =========================================================
+   ACCIONES DEL REPORTE · botones copiar / descargar
+   ========================================================= */
+
+.acciones-reporte {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+    .acciones-reporte {
+        justify-content: stretch;
+    }
+    .acciones-reporte .btn {
+        flex: 1 1 100%;
+    }
+}

@@ -349,7 +349,10 @@ function finalizarFlujo() {
 
 
 function renderizarReporteFinal(markdown) {
+    reporteCompleto = markdown;
+
     const esRechazo = markdown.includes("Soy Radar TIC y solo puedo ayudarte");
+    const accionesReporte = document.getElementById("accionesReporte");
 
     if (esRechazo) {
         reporte.innerHTML = `
@@ -368,6 +371,10 @@ function renderizarReporteFinal(markdown) {
 
         fuentesFinales.innerHTML = "";
         contadorFuentesFinal.textContent = "0";
+
+        if (accionesReporte) {
+            accionesReporte.classList.add("d-none");
+        }
 
         return;
     }
@@ -433,6 +440,10 @@ function renderizarReporteFinal(markdown) {
     `;
 
     reporte.innerHTML = html;
+
+    if (accionesReporte) {
+        accionesReporte.classList.remove("d-none");
+    }
 }
 
 
@@ -1279,4 +1290,61 @@ function mensajeSegunError(error, respuesta) {
         return error.message;
     }
     return "Ocurrió un error inesperado. Intenta de nuevo.";
+}
+
+
+// --- Botones de acciones del reporte ---
+const btnCopiarReporte = document.getElementById("btnCopiarReporte");
+const btnDescargarReporte = document.getElementById("btnDescargarReporte");
+
+if (btnCopiarReporte) {
+    btnCopiarReporte.addEventListener("click", async () => {
+        if (!reporteCompleto) return;
+        try {
+            await navigator.clipboard.writeText(reporteCompleto);
+            const textoOriginal = btnCopiarReporte.innerHTML;
+            btnCopiarReporte.innerHTML = '<i class="bi bi-check2 me-1"></i> Copiado';
+            btnCopiarReporte.disabled = true;
+            setTimeout(() => {
+                btnCopiarReporte.innerHTML = textoOriginal;
+                btnCopiarReporte.disabled = false;
+            }, 2000);
+        } catch (err) {
+            alert("No se pudo copiar al portapapeles. Tu navegador puede no permitirlo.");
+        }
+    });
+}
+
+if (btnDescargarReporte) {
+    btnDescargarReporte.addEventListener("click", () => {
+        if (!reporteCompleto) return;
+
+        const ahora = new Date();
+        const yyyy = ahora.getFullYear();
+        const mm = String(ahora.getMonth() + 1).padStart(2, "0");
+        const dd = String(ahora.getDate()).padStart(2, "0");
+        const hh = String(ahora.getHours()).padStart(2, "0");
+        const min = String(ahora.getMinutes()).padStart(2, "0");
+
+        const pregunta = ultimaPreguntaEnviada || "Investigación";
+        const fecha = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+
+        const encabezado =
+            "# Radar TIC — Reporte de investigación\n\n" +
+            `**Pregunta:** ${pregunta}\n\n` +
+            `**Fecha:** ${fecha}\n\n` +
+            "---\n\n";
+
+        const contenido = encabezado + reporteCompleto;
+        const blob = new Blob([contenido], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+
+        const enlace = document.createElement("a");
+        enlace.href = url;
+        enlace.download = `radar-tic-${yyyy}-${mm}-${dd}-${hh}${min}.txt`;
+        document.body.appendChild(enlace);
+        enlace.click();
+        document.body.removeChild(enlace);
+        URL.revokeObjectURL(url);
+    });
 }
