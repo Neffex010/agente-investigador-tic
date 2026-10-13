@@ -17,6 +17,10 @@ const error = document.getElementById("error");
 let fuentesConsultadas = [];
 let reporteCompleto = "";
 
+let temporizadorInvestigacion = null;
+let segundosTranscurridos = 0;
+let ultimaPreguntaEnviada = "";
+
 
 btnInvestigar.addEventListener("click", investigar);
 
@@ -28,6 +32,8 @@ async function investigar() {
         mostrarError("Escribe una pregunta de investigación.");
         return;
     }
+
+    ultimaPreguntaEnviada = textoPregunta;
 
     prepararInterfaz();
 
@@ -160,6 +166,8 @@ function procesarEventoSSE(bloque) {
 
 
 function prepararInterfaz() {
+    iniciarTemporizador();
+
     fuentesConsultadas = [];
     reporteCompleto = "";
 
@@ -307,6 +315,8 @@ function actualizarContadores() {
 
 
 function finalizarFlujo() {
+    detenerTemporizador();
+
     const pasos = document.querySelectorAll(".process-step");
 
     pasos.forEach(paso => {
@@ -1141,7 +1151,12 @@ function obtenerDominio(url) {
 
 
 function mostrarError(mensaje) {
-    error.textContent = mensaje || "Ocurrió un error.";
+    const contenedorMensaje = document.getElementById("errorMensaje");
+
+    if (contenedorMensaje) {
+        contenedorMensaje.textContent = mensaje || "Ocurrió un error.";
+    }
+
     error.classList.remove("d-none");
 
     if (!actividad.classList.contains("d-none")) {
@@ -1185,3 +1200,44 @@ pregunta.addEventListener("keydown", (evento) => {
         btnInvestigar.click();
     }
 });
+
+
+function iniciarTemporizador() {
+    detenerTemporizador();
+    segundosTranscurridos = 0;
+    actualizarTextoTiempo();
+    temporizadorInvestigacion = setInterval(() => {
+        segundosTranscurridos += 1;
+        actualizarTextoTiempo();
+    }, 1000);
+}
+
+
+function detenerTemporizador() {
+    if (temporizadorInvestigacion) {
+        clearInterval(temporizadorInvestigacion);
+        temporizadorInvestigacion = null;
+    }
+}
+
+
+function actualizarTextoTiempo() {
+    const el = document.getElementById("tiempoInvestigacion");
+    if (!el) return;
+    const min = Math.floor(segundosTranscurridos / 60);
+    const seg = segundosTranscurridos % 60;
+    const texto = min > 0
+        ? `${min}m ${seg.toString().padStart(2, "0")}s`
+        : `${seg}s`;
+    el.textContent = texto;
+}
+
+
+const btnReintentar = document.getElementById("btnReintentar");
+if (btnReintentar) {
+    btnReintentar.addEventListener("click", () => {
+        if (!ultimaPreguntaEnviada) return;
+        pregunta.value = ultimaPreguntaEnviada;
+        btnInvestigar.click();
+    });
+}

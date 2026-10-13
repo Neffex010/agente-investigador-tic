@@ -228,6 +228,10 @@
                                     Preparando la investigación...
                                 </div>
 
+                                <span class="tiempo-investigacion">
+                                    Tiempo: <strong id="tiempoInvestigacion">0s</strong>
+                                </span>
+
                                 <div class="process-track">
                                     <div class="track-line"></div>
 
@@ -320,7 +324,17 @@
                 <section
                     id="error"
                     class="alert alert-danger shadow-sm d-none"
-                ></section>
+                >
+                    <div id="errorMensaje"></div>
+
+                    <button
+                        type="button"
+                        id="btnReintentar"
+                        class="btn btn-outline-secondary btn-sm mt-3"
+                    >
+                        Reintentar
+                    </button>
+                </section>
 
                 <section
                     id="resultado"
