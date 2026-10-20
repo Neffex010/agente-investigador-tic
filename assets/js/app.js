@@ -183,6 +183,22 @@ function prepararInterfaz() {
     resultado.classList.add("d-none");
     actividad.classList.remove("d-none");
 
+    const panelFlotante = document.getElementById("accionesFlotantes");
+
+    if (panelFlotante) {
+        panelFlotante.classList.add("d-none");
+    }
+
+    // El panel de actividad debe quedar visible de inmediato:
+    // la investigacion puede tardar 40-60 s y sin esto el usuario
+    // solo ve el boton deshabilitado y parece que la app se colgo.
+    requestAnimationFrame(() => {
+        actividad.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    });
+
     fuentesEnVivo.innerHTML = `
         <div id="sinFuentes" class="empty-sources">
             Las fuentes aparecerán aquí conforme el agente vaya consultándolas.
@@ -345,6 +361,13 @@ function finalizarFlujo() {
         behavior: "smooth",
         block: "start"
     });
+
+    // Mostrar los accesos rapidos para volver al composer o subir.
+    const accionesFlotantes = document.getElementById("accionesFlotantes");
+
+    if (accionesFlotantes) {
+        accionesFlotantes.classList.remove("d-none");
+    }
 
     if (
         typeof reporteCompleto === "string" && reporteCompleto &&
@@ -546,6 +569,7 @@ function renderFindingsCard(body) {
 
                                 </div>
 
+                                ${hallazgo.descripcion ? `
                                 <div class="finding-description-box">
                                     <div class="finding-section-label">
                                         <i class="bi bi-card-text me-2"></i>
@@ -553,9 +577,10 @@ function renderFindingsCard(body) {
                                     </div>
 
                                     <p class="finding-description-text">
-                                        ${escaparHTML(hallazgo.descripcion || "Sin descripción disponible.")}
+                                        ${escaparHTML(hallazgo.descripcion)}
                                     </p>
                                 </div>
+                                ` : ""}
 
                                 <div class="finding-source-panel">
 
@@ -644,6 +669,11 @@ function renderComparisonCard(body) {
                     </tbody>
                 </table>
             </div>
+
+            <p class="tabla-scroll-hint">
+                <i class="bi bi-arrow-left-right me-1"></i>
+                Desliza horizontalmente para ver todas las columnas
+            </p>
         `;
     } else {
         contenido = markdownToBasicHtml(body);
@@ -1547,3 +1577,41 @@ document.addEventListener("keydown", (evento) => {
 
 // Render inicial
 renderizarHistorial();
+
+
+// =========================================================================
+// NAVEGACIÓN DEL REPORTE · acciones flotantes
+// =========================================================================
+
+const accionesFlotantes = document.getElementById("accionesFlotantes");
+const btnNuevaPregunta = document.getElementById("btnNuevaPregunta");
+const btnVolverArriba = document.getElementById("btnVolverArriba");
+
+if (btnNuevaPregunta) {
+    btnNuevaPregunta.addEventListener("click", () => {
+        const composer = document.getElementById("composer");
+        const campo = document.getElementById("pregunta");
+
+        if (composer) {
+            composer.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        if (campo) {
+            setTimeout(() => {
+                campo.focus({ preventScroll: true });
+            }, 450);
+        }
+    });
+}
+
+if (btnVolverArriba) {
+    btnVolverArriba.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+}

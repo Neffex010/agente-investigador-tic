@@ -153,7 +153,7 @@
         <div class="row justify-content-center">
             <div class="col-xl-10">
 
-                <section class="glass-card composer-card mb-4">
+                <section id="composer" class="glass-card composer-card mb-4">
                     <div class="card-topbar"></div>
 
                     <div class="p-4 p-lg-5">
@@ -174,6 +174,13 @@
                                 </p>
                             </div>
                         </div>
+
+                        <label
+                            for="pregunta"
+                            class="visually-hidden"
+                        >
+                            Pregunta de investigación
+                        </label>
 
                         <textarea
                             id="pregunta"
@@ -236,6 +243,8 @@
                                 <div
                                     id="estadoActual"
                                     class="status-ribbon mb-4"
+                                    role="status"
+                                    aria-live="polite"
                                 >
                                     Preparando la investigación...
                                 </div>
@@ -336,6 +345,8 @@
                 <section
                     id="error"
                     class="alert alert-danger shadow-sm d-none"
+                    role="alert"
+                    aria-live="assertive"
                 >
                     <div id="errorMensaje"></div>
 
@@ -351,6 +362,7 @@
                 <section
                     id="resultado"
                     class="d-none"
+                    aria-label="Resultado de la investigación"
                 >
                     <div class="result-top">
                         <div>
@@ -375,6 +387,11 @@
                     ></div>
 
                     <div id="accionesReporte" class="acciones-reporte d-none">
+                        <span class="acciones-reporte-label">
+                            <i class="bi bi-box-arrow-up me-1"></i>
+                            Exportar reporte
+                        </span>
+
                         <button
                             type="button"
                             id="btnCopiarReporte"
@@ -467,6 +484,28 @@
             </button>
         </footer>
     </aside>
+
+    <div id="accionesFlotantes" class="acciones-flotantes d-none">
+        <button
+            type="button"
+            id="btnVolverArriba"
+            class="btn-flotante btn-flotante-icon"
+            title="Volver arriba"
+            aria-label="Volver arriba"
+        >
+            <i class="bi bi-arrow-up"></i>
+        </button>
+
+        <button
+            type="button"
+            id="btnNuevaPregunta"
+            class="btn-flotante btn-flotante-primary"
+            title="Escribir una nueva pregunta"
+        >
+            <i class="bi bi-pencil-square me-1"></i>
+            Nueva pregunta
+        </button>
+    </div>
 
     <script src="/assets/js/app.js"></script>
 
