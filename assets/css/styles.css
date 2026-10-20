@@ -3090,3 +3090,545 @@ body .form-control:focus-visible {
         min-height: 44px;
     }
 }
+
+
+/* ============================================================
+   V9 · BRUTALISM — CLARO OSCURECIDO
+   Paleta oscura-menta, bordes duros de 2px, sombras planas
+   offset y esquinas rectas. Mismo layout, otra estética.
+   ============================================================ */
+
+:root {
+    /* ===== Superficies ===== */
+    --bg: #e2ebe8;
+    --bg-soft: #d3e0dc;
+    --panel: #ffffff;
+    --panel-border: #c3d2ce;
+
+    /* ===== Tinta (bordes y sombras duras) ===== */
+    --ink: #0f1412;
+
+    /* ===== Tipografía ===== */
+    --text: #0b0f0e;
+    --text-soft: #2f3a37;
+    --muted: #5b6864;
+
+    /* ===== Marca ===== */
+    --accent: #0f766e;
+    --accent-hover: #115e59;
+    --accent-2: #0e7490;
+    --success: #047857;
+    --danger: #b91c1c;
+
+    /* ===== Sombras planas ===== */
+    --shadow: 5px 5px 0 var(--ink);
+    --shadow-soft: 3px 3px 0 var(--ink);
+    --shadow-lg: 8px 8px 0 var(--ink);
+
+    /* ===== Radios rectos ===== */
+    --radius-sm: 0;
+    --radius-md: 0;
+    --radius-lg: 0;
+    --radius-xl: 0;
+}
+
+/* ------------------------------------------------------------
+   1. BASE — fondo plano, sin capas radiales
+   ------------------------------------------------------------ */
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.page-bg {
+    display: none !important;
+}
+
+::selection {
+    background: var(--ink);
+    color: var(--bg);
+}
+
+:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------
+   2. RADIOS — todo a cero
+   ------------------------------------------------------------ */
+.glass-card,
+body .card,
+.hero-card,
+.mini-panel,
+.pill,
+.sugerencia-chip,
+.badge,
+.badge-soft,
+.btn,
+.btn-primary,
+.btn-outline-secondary,
+.btn-sm,
+.btn-lg,
+.form-control,
+.form-select,
+textarea.form-control,
+.question-box,
+.eyebrow,
+.section-icon,
+.counter-pill,
+.status-ribbon,
+.process-bullet,
+.result-badge,
+.result-top,
+.acciones-reporte,
+.acciones-reporte .btn,
+.btn-flotante,
+.report-hero,
+.report-card,
+.finding-description-box,
+.finding-source-panel,
+.finding-item,
+.compare-table thead th,
+.compare-table thead th:first-child,
+.compare-table thead th:last-child,
+.compare-table tbody tr:last-child td:first-child,
+.compare-table tbody tr:last-child td:last-child,
+.historial-panel,
+.historial-item,
+.historial-header,
+.historial-footer,
+.live-source-card,
+.source-icon,
+.preview-panel,
+.mini-steps span,
+.brand-mark,
+.list-panel,
+.empty-sources,
+.tiempo-investigacion,
+.report-lead,
+.plan-step,
+.trend-list li {
+    border-radius: 0 !important;
+}
+
+/* ------------------------------------------------------------
+   3. SUPERFICIES — borde duro de 2px y sombra offset
+   ------------------------------------------------------------ */
+.glass-card,
+body .card,
+.hero-card,
+.report-hero,
+.report-card,
+.mini-panel,
+.acciones-reporte,
+.result-top,
+.finding-description-box,
+.finding-source-panel,
+.preview-panel,
+.list-panel,
+.historial-item,
+.live-source-card {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+.glass-card:hover,
+body .card:hover,
+.hero-card:hover,
+.report-hero:hover {
+    border-color: var(--ink) !important;
+    box-shadow: 7px 7px 0 var(--ink) !important;
+}
+
+.hero-card {
+    padding: 40px 44px;
+}
+
+.report-hero {
+    padding: 26px;
+}
+
+.report-hero::before {
+    display: none;
+}
+
+.report-hero .eyebrow {
+    color: var(--accent) !important;
+}
+
+.report-lead {
+    color: var(--text-soft);
+}
+
+/* ------------------------------------------------------------
+   4. BOTONES — planos, con sombra dura y efecto "pulsar"
+   ------------------------------------------------------------ */
+body .btn {
+    background: var(--panel);
+    color: var(--text);
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 var(--ink) !important;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+body .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+body .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink) !important;
+}
+
+body .btn-primary {
+    background: var(--accent) !important;
+    border-color: var(--ink) !important;
+    color: #ffffff !important;
+}
+
+body .btn-primary:hover,
+body .btn-primary:focus {
+    background: var(--accent-hover) !important;
+    color: #ffffff !important;
+}
+
+body .btn-outline-secondary {
+    background: var(--panel) !important;
+    border-color: var(--ink) !important;
+    color: var(--text) !important;
+}
+
+body .btn-outline-secondary:hover,
+body .btn-outline-secondary:focus {
+    background: var(--bg-soft) !important;
+    color: var(--text) !important;
+}
+
+body .btn-link {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------
+   5. INPUTS — recuadros duros, sin sombra interior
+   ------------------------------------------------------------ */
+body .form-control,
+body .form-select,
+body textarea.form-control,
+.question-box {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
+}
+
+body .form-control:focus,
+body .form-select:focus,
+body textarea.form-control:focus,
+.question-box:focus {
+    background: var(--panel) !important;
+    border-color: var(--ink) !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+    outline: none !important;
+}
+
+/* ------------------------------------------------------------
+   6. ETIQUETAS, PILLS, BADGES Y CHIPS
+   ------------------------------------------------------------ */
+body .badge,
+.badge-soft,
+.pill,
+.sugerencia-chip,
+.eyebrow,
+.counter-pill,
+.result-badge,
+.status-ribbon {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+    box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+body .badge.bg-primary,
+body .badge.text-bg-primary {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+body .badge.bg-success,
+body .badge.text-bg-success,
+.result-badge {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
+
+.counter-pill.solid {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+.eyebrow {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+.sugerencia-chip:hover {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+/* ------------------------------------------------------------
+   7. ELEMENTOS CON ACENTO — icono, pasos, marca
+   ------------------------------------------------------------ */
+.section-icon,
+.mini-steps span,
+.brand-mark,
+.process-step.active .process-bullet,
+.process-step.complete .process-bullet {
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+.process-bullet {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+}
+
+.process-step.active .process-bullet {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+.process-step.complete .process-bullet {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
+
+.mini-steps span {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+.brand-mark {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+/* ------------------------------------------------------------
+   8. TABLA — encabezado negro y celdas en rejilla
+   ------------------------------------------------------------ */
+.compare-table thead th {
+    background: var(--ink) !important;
+    color: #ffffff !important;
+    border: 2px solid var(--ink) !important;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.compare-table tbody td {
+    background: var(--panel) !important;
+    border: 1px solid var(--ink) !important;
+    color: var(--text);
+}
+
+.compare-table tbody tr:nth-child(even) td {
+    background: var(--bg-soft) !important;
+}
+
+.compare-table tbody tr:hover td {
+    background: #eaf5f2 !important;
+}
+
+/* ------------------------------------------------------------
+   9. NAVBAR, SEPARADORES Y FOOTER
+   ------------------------------------------------------------ */
+body .navbar {
+    background: var(--bg) !important;
+    border-bottom: 2px solid var(--ink) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+body .navbar .navbar-brand {
+    color: var(--text) !important;
+}
+
+hr {
+    border-top: 2px solid var(--ink) !important;
+    opacity: 1;
+}
+
+footer {
+    border-top: 2px solid var(--ink) !important;
+    color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   10. ACCIONES FLOTANTES — mismo lenguaje brutalista
+   ------------------------------------------------------------ */
+.btn-flotante {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-flotante:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink) !important;
+}
+
+.btn-flotante-primary {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+/* ------------------------------------------------------------
+   11. PULSO — parpadeo seco en vez de respiración suave
+   ------------------------------------------------------------ */
+.pulse-icon {
+    animation: pulseBrutal 1.4s steps(2, end) infinite;
+}
+
+@keyframes pulseBrutal {
+    0%, 100% {
+        box-shadow: 3px 3px 0 var(--ink);
+    }
+    50% {
+        box-shadow: 3px 3px 0 var(--ink), 0 0 0 4px var(--accent);
+    }
+}
+
+/* ------------------------------------------------------------
+   12. PISTA DE SCROLL Y PILDORAS DEL HERO
+   ------------------------------------------------------------ */
+.tabla-scroll-hint {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.hero-badges .pill {
+    background: var(--panel) !important;
+}
+
+
+/* ------------------------------------------------------------
+   13. BRUTALISM — LIMPIEZA DE CAPAS DECORATIVAS SUAVES
+   ------------------------------------------------------------ */
+
+/* El halo radial del hero se pintaba ENCIMA del mini-panel
+   (pseudo-elemento absoluto sobre contenido estatico). */
+.hero-card::before {
+    display: none !important;
+}
+
+/* Barra superior del composer: color plano, sin degradado */
+.card-topbar {
+    background: var(--accent) !important;
+    border-radius: 0 !important;
+    height: 6px;
+}
+
+/* El borde superior de la barra hereda el radio del card */
+.composer-card {
+    border-radius: 0 !important;
+}
+
+/* El mini-panel deja de usar inset (ya es una caja dura) */
+.mini-panel {
+    background: var(--panel) !important;
+}
+
+/* Etiqueta del hero: sin degradado */
+.eyebrow {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+}
+
+
+/* ------------------------------------------------------------
+   14. BRUTALISM — CORRECCIONES DE LECTURA Y CONSISTENCIA
+   ------------------------------------------------------------ */
+
+/* El eyebrow del reporte quedaba teal sobre teal (text-white-50
+   de Bootstrap gana por especificidad). Ahora es legible. */
+.report-hero .eyebrow {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+/* Tarjetas de hallazgo: caja dura, sin degradado pastel */
+.finding-item {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+}
+
+.finding-item:hover {
+    border-color: var(--ink) !important;
+    box-shadow: 6px 6px 0 var(--ink) !important;
+}
+
+.finding-status {
+    background: var(--bg-soft) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
+}
+
+.finding-source-panel {
+    background: var(--bg-soft) !important;
+}
+
+.finding-source-icon,
+.source-icon {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+}
+
+/* Listas y planes: separadores duros */
+.list-panel li,
+.trend-list li {
+    border-bottom: 1px solid var(--ink) !important;
+}
+
+.list-panel li:last-child,
+.trend-list li:last-child {
+    border-bottom: none !important;
+}
+
+.plan-step {
+    background: var(--panel) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+/* Indicador "LISTO" del resultado final */
+.result-badge {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
