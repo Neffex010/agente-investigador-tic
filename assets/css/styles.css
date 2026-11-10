@@ -3632,3 +3632,68 @@ footer {
     background: var(--success) !important;
     color: #ffffff !important;
 }
+
+/* ------------------------------------------------------------
+   15. FOOTER — autoría y enlace al repositorio
+   ------------------------------------------------------------ */
+
+.footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 18px;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+}
+
+.footer-autor {
+    display: inline-flex;
+    align-items: center;
+}
+
+.footer-autor i {
+    color: var(--accent);
+}
+
+.footer-github {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    background: var(--panel);
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.footer-github:hover {
+    color: var(--text);
+    text-decoration: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.footer-github:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+}
+
+.footer-github i {
+    color: var(--accent);
+}
+
+@media (max-width: 575.98px) {
+    .footer-meta {
+        gap: 8px 12px;
+    }
+
+    .footer-github {
+        min-height: 44px;
+        padding: 8px 16px;
+    }
+}
